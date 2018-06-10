@@ -1,0 +1,35 @@
+{
+  "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+  },
+  "extends": ["eslint:recommended"],
+"parser": "babel-eslint",
+  "parserOptions": {
+      "ecmaFeatures": {
+          "experimentalObjectRestSpread": true
+      },
+      "sourceType": "module"
+  },
+  "rules": {
+      "quotes": [
+          "error",
+          "single"
+      ],
+      "semi": [
+          "error",
+          "always"
+      ],
+      "no-console": 0,
+      "no-unused-vars": "warn",
+      "no-useless-escape": 0,
+      "comma-dangle": ["error", {
+        "objects": "always-multiline",
+        "arrays": "always-multiline"
+      }],
+      "quote-props": ["error", "as-needed"],
+      "object-shorthand": ["error", "always"],
+      "eol-last": ["error", "always"]
+  }
+}

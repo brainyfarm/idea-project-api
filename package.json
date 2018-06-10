@@ -1,0 +1,39 @@
+{
+  "name": "idea-project-api",
+  "version": "1.0.0",
+  "description": "Idea project api for Codementor X",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "eslint ./server && babel-watch ./server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-oakinseye/idea-project-api.git"
+  },
+  "keywords": [],
+  "author": "Olawale Akinseye <brainyfarm@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela-oakinseye/idea-project-api/issues"
+  },
+  "homepage": "https://github.com/andela-oakinseye/idea-project-api#readme",
+  "dependencies": {
+    "bcrypt": "^2.0.1",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.2",
+    "mongoose": "^5.1.4",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-eslint": "^8.2.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-watch": "^2.0.7",
+    "eslint": "^4.19.1",
+    "eslint-plugin-flowtype": "^2.49.3",
+    "eslint-plugin-import": "^2.12.0"
+  }
+}
