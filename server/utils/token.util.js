@@ -1,12 +1,16 @@
+import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+
+dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 class Token {
-  static sign(payload) {
-    return jwt.sign(payload, JWT_SECRET, {
+  static sign(data) {
+    const token = jwt.sign(data, JWT_SECRET, {
       expiresIn: '10 minutes',
     });
+    return token;
   }
   static decode(token) {
     try {

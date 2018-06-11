@@ -9,4 +9,7 @@ router.route('/')
   .post(User.login)
   .delete(User.logout);
 
+router.route('/refresh')
+  .post(User.refreshToken);
+
 export default router;

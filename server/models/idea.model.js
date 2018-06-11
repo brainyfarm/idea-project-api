@@ -32,25 +32,29 @@ const Idea = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-  last_modified: {
-    type: Date,
-    default: Date.now,
-  },
+}, {
+  timestamps: true,
 });
 
 Idea.pre('save', function(next) {
   const idea = this;
-  idea.last_modified = Date.now();
-
-  if(idea.isModified('impact') || idea.isModified('ease') || idea.isModified('confidence')) {
-    const average_score = (idea.impact + idea.ease + idea.confidence) / 3;
-    idea.average_score = average_score;
-    return next();
-  }
+  const average_score = (idea.impact + idea.ease + idea.confidence) / 3;
+  idea.average_score = average_score;
   return next();
+});
+
+Idea.pre('findOneAndUpdate', function(next) {
+  const updatedFields = this.getUpdate().$set;
+  this.findOne({}).exec()
+    .then((previousValue) => {
+      const impact = updatedFields.impact || previousValue.impact;
+      const ease = updatedFields.ease || previousValue.ease;
+      const confidence = updatedFields.confidence || previousValue.confidence;
+      const average_score = (Number(impact) + Number(ease) + Number(confidence)) / 3;
+        this.updateOne({}, { $set: { average_score }}).exec()
+          .then(() => {
+            return next();
+          });
+    });
 });
 export default mongoose.model('Idea', Idea);

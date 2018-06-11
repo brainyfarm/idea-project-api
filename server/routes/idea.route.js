@@ -6,8 +6,10 @@ const router = express.Router();
 
 router.route('/')
   .post(Idea.create)
-  .get(Idea.list)
-  .patch(Idea.update)
+  .get(Idea.list);
+
+router.route('/:id')
+  .put(Idea.update)
   .delete(Idea.delete);
 
 export default router;
