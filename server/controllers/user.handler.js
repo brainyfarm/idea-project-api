@@ -1,3 +1,4 @@
+import md5 from 'md5';
 import bcrypt from 'bcrypt';
 import sqlite from 'sqlite3';
 import { randomBytes } from 'crypto';
@@ -20,7 +21,9 @@ const BAD_TOKENS_DB = new sqlite3.Database(SQLITE_DB, (err) => {
 class UserController {
   static create(request, response) {
     const { name, email, password } = request.body;
-    const newUser = new User({ name, email, password });
+    const emailHash = md5(email.toLowerCase().trim());
+    const avatar_url = `https://www.gravatar.com/avatar/${emailHash}?d=mm&s=200`;
+    const newUser = new User({ name, email, password, avatar_url });
     return isCompliantPassword(password) ?
       newUser.save()
         .then((user) => {

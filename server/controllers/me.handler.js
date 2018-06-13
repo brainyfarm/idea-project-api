@@ -6,7 +6,7 @@ class MeController {
     const token = request.headers['x-access-token'];
     const currentUserId = Token.decode(token).id;
     console.log(currentUserId);
-    return User.findById(currentUserId, 'email name').exec()
+    return User.findById(currentUserId, 'email name avatar_url').exec()
       .then((user) => {
         if(!user) {
           return response.status(404)

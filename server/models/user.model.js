@@ -25,6 +25,10 @@ const User = new mongoose.Schema({
     type: String,
     required: [true, 'password field cannot be empty'],
   },
+  avatar_url: {
+    type: String,
+    required: true,
+  },
   created_at: {
     type: Date,
     default: Date.now,
