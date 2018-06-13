@@ -1,15 +1,16 @@
 import express from 'express';
 
 import Idea from '../controllers/idea.handler';
+import isAuthenticated from '../middlewares/auth.middleware';
 
 const router = express.Router();
 
 router.route('/')
-  .post(Idea.create)
-  .get(Idea.list);
+  .post(isAuthenticated, Idea.create)
+  .get(isAuthenticated, Idea.list);
 
 router.route('/:id')
-  .put(Idea.update)
-  .delete(Idea.delete);
+  .put(isAuthenticated, Idea.update)
+  .delete(isAuthenticated, Idea.delete);
 
 export default router;
