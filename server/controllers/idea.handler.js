@@ -63,8 +63,7 @@ class IdeaController {
     const currentUserId = Token.decode(token).id;
 
     return Idea.find(
-        { user_id: currentUserId },
-        '_id content impact ease confidence average_score created_at')
+        { user_id: currentUserId },)
         .sort({ created_at: -1 }).exec()
           .then(ideas => {
             console.log(ideas.length);

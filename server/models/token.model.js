@@ -14,8 +14,10 @@ const Token = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-}, {
-  timestamps: true,
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export default mongoose.model('Token', Token);

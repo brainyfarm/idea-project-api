@@ -32,8 +32,10 @@ const Idea = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-}, {
-  timestamps: true,
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 Idea.pre('save', function(next) {
