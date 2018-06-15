@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import convertToPrecise from '../utils/convert.precision';
 
 const Idea = new mongoose.Schema({
@@ -37,8 +38,8 @@ const Idea = new mongoose.Schema({
     ref: 'User',
   },
   created_at: {
-    type: Date,
-    default: Date.now,
+    type: Number,
+    default: new Date().getTime(),
   },
 });
 
