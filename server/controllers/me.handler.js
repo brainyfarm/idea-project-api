@@ -1,24 +1,19 @@
-import Token from '../utils/token.util';
 import User from '../models/user.model';
+
+import Token from '../utils/token.util';
+import * as Reply from '../utils/responses.util';
+import { USER_INFO_FIELDS } from '../utils/db.fields.util';
 
 class MeController {
   static get(request, response) {
     const token = request.headers['x-access-token'];
-    const currentUserId = Token.decode(token).id;
-    console.log(currentUserId);
-    return User.findById(currentUserId, 'email name avatar_url').exec()
-      .then((user) => {
-        if(!user) {
-          return response.status(404)
-            .json({ error: 'User does not exist' });
-        }
-        return response.status(200)
-          .json(user);
-      })
-      .catch((error) => {
-        return response.status(500)
-          .json({ error });
-      });
+    const _id = Token.decode(token).id;
+    return User.findOne({ _id }).select(USER_INFO_FIELDS).exec()
+      .then(user => user ?
+        Reply.responseOk(response, user) :
+        Reply.notFoundError(response, 'user not found'))
+      .catch(error => 
+        Reply.serverError(response, error.message));
   }
 }
 

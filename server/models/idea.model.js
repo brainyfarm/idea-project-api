@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
+import convertToPrecise from '../utils/convert.precision';
 
 const Idea = new mongoose.Schema({
+  id: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
   content: {
     type: String,
     min: [8, 'idea too short'],
@@ -26,7 +30,7 @@ const Idea = new mongoose.Schema({
     required: [true, 'Please provide a confidence value'],
   },
   average_score: {
-    type: Number,
+    type: mongoose.SchemaTypes.Number,
   },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -40,19 +44,22 @@ const Idea = new mongoose.Schema({
 
 Idea.pre('save', function(next) {
   const idea = this;
-  const average_score = (idea.impact + idea.ease + idea.confidence) / 3;
+  const average_score = convertToPrecise(((idea.impact + idea.ease + idea.confidence) / 3));
   idea.average_score = average_score;
+  idea.id = idea._id;
   return next();
 });
 
 Idea.pre('findOneAndUpdate', function(next) {
-  const updatedFields = this.getUpdate().$set;
+  const updatedFields = this.getUpdate();
+  console.log(updatedFields);
   this.findOne({}).exec()
     .then((previousValue) => {
       const impact = updatedFields.impact || previousValue.impact;
       const ease = updatedFields.ease || previousValue.ease;
       const confidence = updatedFields.confidence || previousValue.confidence;
-      const average_score = (Number(impact) + Number(ease) + Number(confidence)) / 3;
+      const average_score_float = convertToPrecise((Number(impact) + Number(ease) + Number(confidence)) / 3);
+      const average_score = average_score_float;
         this.updateOne({}, { $set: { average_score }}).exec()
           .then(() => {
             return next();
