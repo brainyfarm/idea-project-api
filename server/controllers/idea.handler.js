@@ -54,7 +54,8 @@ class IdeaController {
     const token = request.headers['x-access-token'];
     const user_id = Token.decode(token).id;
     const excludes = '-_id -__v -user_id';
-    return db.findItems(Idea, { user_id }, excludes)
+    return Idea.find({ user_id }, excludes)
+      .sort({ average_score: -1 }).exec()
       .then(ideas => Reply.responseOk(response, Paginator(ideas, currentPage, limit)))
       .catch(error => Reply.serverError(response, error));
   }
