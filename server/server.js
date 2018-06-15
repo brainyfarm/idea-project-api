@@ -1,10 +1,9 @@
 import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import sqlite from 'sqlite3';
 import express from 'express';
 import mongoose from 'mongoose';
-import sqlite from 'sqlite3';
-
 import MeRoutes from './routes/me.route';
 import IdeaRoutes from './routes/idea.route';
 import UserRoutes from './routes/user.route';
@@ -32,14 +31,25 @@ mongoose.connect(MONGO_URI, () => {
 
 const tokenDb = new sqlite3.Database(SQLITE_DB, (err) => {
   if(err) 
-    return error(err);
+  return error(err);
   SqliteManager.createTokenTable(tokenDb);
 }); 
+
+/**
+ * Attempt to fix a bug with bodyParser
+ */
+app.use((req, res, next) => {
+  if(['GET', 'DELETE'].includes(req.method) ) {
+    req._body = true;
+  }
+  return next();
+});
 
 app.use(cors());
 app.use(morgan('combined', { immediate: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 
 app.use('/me', MeRoutes);
 app.use('/ideas', IdeaRoutes);
